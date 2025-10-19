@@ -1,6 +1,28 @@
 {% extends "base.html" %}
 {% block content %}
   <h2>📊 Detection Results</h2>
-  <p>Placeholder: Results of anomaly detection will appear here (graphs, metrics, anomalies table).</p>
-  <div class="alert alert-info">Later: show anomaly scores, confusion matrix, time-series plots.</div>
+
+  {% if summary_text %}
+  <div class="card p-3 mb-4 shadow-sm">
+    <h5>📈 Detection Summary:</h5>
+    <pre>{{ summary_text }}</pre>
+  </div>
+  {% else %}
+  <div class="alert alert-warning">No detection results yet.</div>
+  {% endif %}
+
+  {% if error_hist_file %}
+  <div class="card p-3 shadow-sm mb-4">
+    <h5>🖼️ Reconstruction Error Distribution</h5>
+    <img src="{{ url_for('static', filename=error_hist_file) }}" class="img-fluid rounded shadow" alt="Error Histogram">
+  </div>
+  {% endif %}
+
+  {% if csv_file %}
+  <div class="mt-4">
+    <a href="{{ url_for('static', filename=csv_file) }}" class="btn btn-success" download>
+      ⬇️ Download Full Detection Results (CSV)
+    </a>
+  </div>
+  {% endif %}
 {% endblock %}

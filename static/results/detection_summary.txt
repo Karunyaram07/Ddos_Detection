@@ -1,0 +1,1 @@
+Threshold Used: 14.6698\nTotal Records: 20\nAnomalies Detected: 1\n
