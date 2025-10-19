@@ -4,6 +4,12 @@ import joblib
 import os
 from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')  # must be before pyplot import
+import matplotlib.pyplot as plt
+
+
+
 
 def detect_anomalies(test_path, model_dir="model", results_dir="static/results", threshold_factor=2.0):
     """
@@ -70,3 +76,4 @@ def detect_anomalies(test_path, model_dir="model", results_dir="static/results",
         "plot_path": plot_path,
         "summary_file": summary_path
     }
+

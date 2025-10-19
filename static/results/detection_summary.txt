@@ -1,1 +1,6 @@
-Threshold Used: 14.6698\nTotal Records: 20\nAnomalies Detected: 1\n
+threshold: 24851.225733156265
+anomalies: 0
+total: 6
+result_csv: static\results\detection_results.csv
+plot_path: static\results\error_hist.png
+summary_file: static\results\detection_summary.txt

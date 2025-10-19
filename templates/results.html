@@ -1,28 +1,66 @@
 {% extends "base.html" %}
-{% block content %}
-  <h2>📊 Detection Results</h2>
 
-  {% if summary_text %}
-  <div class="card p-3 mb-4 shadow-sm">
+{% block content %}
+<h2>📊 Detection Results</h2>
+
+<!-- Summary -->
+{% if summary_text %}
+<div class="card p-3 mb-4 shadow-sm">
     <h5>📈 Detection Summary:</h5>
     <pre>{{ summary_text }}</pre>
-  </div>
-  {% else %}
-  <div class="alert alert-warning">No detection results yet.</div>
-  {% endif %}
+</div>
+{% else %}
+<div class="alert alert-warning">No detection results yet.</div>
+{% endif %}
 
-  {% if error_hist_file %}
-  <div class="card p-3 shadow-sm mb-4">
+<!-- Reconstruction Error Histogram -->
+{% if error_hist_file %}
+<div class="card p-3 shadow-sm mb-4">
     <h5>🖼️ Reconstruction Error Distribution</h5>
-    <img src="{{ url_for('static', filename=error_hist_file) }}" class="img-fluid rounded shadow" alt="Error Histogram">
-  </div>
-  {% endif %}
+    <p>Shows the distribution of reconstruction errors. The red dashed line indicates the anomaly threshold.</p>
+    <img src="{{ url_for('static', filename='results/error_hist.png') }}" class="img-fluid rounded shadow" alt="Error Histogram">
+</div>
+{% endif %}
 
-  {% if csv_file %}
-  <div class="mt-4">
+<!-- Top anomalies table -->
+{% if detect_info and detect_info.top_anomalies %}
+<div class="card p-3 mb-4 shadow-sm">
+    <h5>⚠️ Top Anomalies</h5>
+    {% if detect_info.anomaly_percentage is defined %}
+    <p>Anomaly Percentage: {{ detect_info.anomaly_percentage }}%</p>
+    {% endif %}
+    <div class="table-responsive">
+        <table class="table table-sm table-bordered table-hover">
+            <thead class="table-light">
+                <tr>
+                    {% for col in detect_info.top_anomalies[0].keys() %}
+                    <th>{{ col }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in detect_info.top_anomalies %}
+                <tr>
+                    {% for val in row.values() %}
+                    <td>{{ val }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<p>No anomalies detected!</p>
+{% endif %}
+
+<!-- Download CSV -->
+{% if csv_file %}
+<div class="mt-3">
     <a href="{{ url_for('static', filename=csv_file) }}" class="btn btn-success" download>
-      ⬇️ Download Full Detection Results (CSV)
+        ⬇️ Download Full Detection Results (CSV)
     </a>
-  </div>
-  {% endif %}
+</div>
+{% endif %}
+
 {% endblock %}
